@@ -8,3 +8,8 @@ MarkupSafe==2.1.1
 Werkzeug==2.2.2
 zipp==3.11.0
 flask_bootstrap
+flask_wtf
+bokeh
+pandas
+bs4
+wtforms
