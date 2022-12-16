@@ -1,0 +1,128 @@
+{% extends "home.html" %}
+
+{% block stock_content %}
+<div id="country" class="collapse collapse-box" align="center">
+    <form action="" method="post" autocomplete="off">
+        {{ form.hidden_tag() }}
+
+        <p>
+            {{form.Stock.label}}
+            {{form.Stock(id_='autocomplete')}}
+        </p>
+        <p id="submit">
+            {{form.submit()}}
+        </p>
+    </form>
+</div>
+
+<script>
+    function autocomplete(inp, arr) {
+        /*the autocomplete function takes two arguments,
+        the text field element and an array of possible autocompleted values: */
+        var currentFocus;
+        /*execute a function when someone writes in the text field:*/
+        inp.addEventListener("input", function (e) {
+            var a, b, i, val = this.value;
+            /*close any already open lists of autocompleted values*/
+            closeAllLists();
+            if (!val) {
+                return false;
+            }
+            currentFocus = -1;
+            /*create a DIV element that will contain the items (values):*/
+            a = document.createElement("DIV");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            /*append the DIV element as a child of the autocomplete container:*/
+            this.parentNode.appendChild(a);
+            /*for each item in the array...*/
+            for (i = 0; i < arr.length; i++) {
+                /*check if the item starts with the same letters as the text field value:*/
+                if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                    /*create a DIV element for each matching element:*/
+                    b = document.createElement("DIV");
+                    /*make the matching letters bold:*/
+                    b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                    b.innerHTML += arr[i].substr(val.length);
+                    /*insert a input field that will hold the current array item's value:*/
+                    b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                    /*execute a function when someone clicks on the item value (DIV element):*/
+                    b.addEventListener("click", function (e) {
+                        /*insert the value for the autocomplete text field:*/
+                        inp.value = this.getElementsByTagName("input")[0].value;
+                        /*close the list of autocompleted values,
+                        (or any other open lists of autocompleted values:*/
+                        closeAllLists();
+                    });
+                    a.appendChild(b);
+                }
+            }
+        });
+        /*execute a function presses a key on the keyboard:*/
+        inp.addEventListener("keydown", function (e) {
+            var x = document.getElementById(this.id + "autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) {
+                /*If the arrow DOWN key is pressed,
+                increase the currentFocus variable:*/
+                currentFocus++;
+                /*and and make the current item more visible:*/
+                addActive(x);
+            } else if (e.keyCode == 38) { //up
+                /*If the arrow UP key is pressed,
+                decrease the currentFocus variable:*/
+                currentFocus--;
+                /*and and make the current item more visible:*/
+                addActive(x);
+            } else if (e.keyCode == 13) {
+                /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                e.preventDefault();
+                if (currentFocus > -1) {
+                    /*and simulate a click on the "active" item:*/
+                    if (x) x[currentFocus].click();
+                }
+            }
+        });
+
+        function addActive(x) {
+            /*a function to classify an item as "active":*/
+            if (!x) return false;
+            /*start by removing the "active" class on all items:*/
+            removeActive(x);
+            if (currentFocus >= x.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = (x.length - 1);
+            /*add class "autocomplete-active":*/
+            x[currentFocus].classList.add("autocomplete-active");
+        }
+
+        function removeActive(x) {
+            /*a function to remove the "active" class from all autocomplete items:*/
+            for (var i = 0; i < x.length; i++) {
+                x[i].classList.remove("autocomplete-active");
+            }
+        }
+
+        function closeAllLists(elmnt) {
+            /*close all autocomplete lists in the document,
+            except the one passed as an argument:*/
+            var x = document.getElementsByClassName("autocomplete-items");
+            for (var i = 0; i < x.length; i++) {
+                if (elmnt != x[i] && elmnt != inp) {
+                    x[i].parentNode.removeChild(x[i]);
+                }
+            }
+        }
+
+        /*execute a function when someone clicks in the document:*/
+        document.addEventListener("click", function (e) {
+            closeAllLists(e.target);
+        });
+    }
+
+    /*An array containing ingredients*/
+    var stocks = ['AAL', 'AAON', 'AAPL', 'AAWW', 'ABCB', 'ABCL', 'ABCM', 'ABMD', 'ABNB', 'ACAD', 'ACGL', 'ACHC', 'ACIW', 'ACLS', 'ACT', 'ADBE', 'ADI', 'ADP', 'ADSK', 'AEIS', 'AEP', 'AFRM', 'AGNC', 'AHCO', 'AIMC', 'AKAM', 'AKRO', 'ALGM', 'ALGN', 'ALHC', 'ALKS', 'ALNY', 'ALRM', 'ALTR', 'AMAT', 'AMBA', 'AMD', 'AMED', 'AMGN', 'AMKR', 'AMLX', 'AMZN', 'ANSS', 'APA', 'APLS', 'APP', 'APPF', 'APPN', 'ARCC', 'ARGX', 'ARLP', 'ARRY', 'ARVN', 'ARWR', 'ASML', 'ASND', 'ASO', 'ATAT', 'ATRC', 'ATSG', 'ATVI', 'AUB', 'AVAV', 'AVGO', 'AVT', 'AXNX', 'AXON', 'AXSM', 'AY', 'AZN', 'AZPN', 'AZTA', 'BANF', 'BANR', 'BCPC', 'BCRX', 'BEAM', 'BECN', 'BGNE', 'BHF', 'BIDU', 'BIIB', 'BILI', 'BKNG', 'BKR', 'BL', 'BLKB', 'BMBL', 'BMRN', 'BNTX', 'BOKF', 'BPMC', 'BPOP', 'BRKR', 'BRZE', 'BSY', 'BZ', 'CACC', 'CALM', 'CAR', 'CASY', 'CATY', 'CBRL', 'CBSH', 'CCEP', 'CCOI', 'CD', 'CDNS', 'CDW', 'CEG', 'CELH', 'CENT', 'CERE', 'CERT', 'CFLT', 'CG', 'CGNX', 'CHDN', 'CHK', 'CHKP', 'CHRD', 'CHRW', 'CHTR', 'CHX', 'CIGI', 'CINF', 'CLBK', 'CMCSA', 'CME', 'CNXC', 'COHR', 'COIN', 'COKE', 'COLB', 'COLM', 'COOP', 'CORT', 'COST', 'COUP', 'CPRT', 'CRDO', 'CROX', 'CRSP', 'CRUS', 'CRVL', 'CRWD', 'CSCO', 'CSGP', 'CSIQ', 'CSQ', 'CSX', 'CTAS', 'CTSH', 'CVBF', 'CVCO', 'CVLT', 'CVT', 'CWST', 'CYBR', 'CYTK', 'CZR', 'DADA', 'DBX', 'DDOG', 'DIOD', 'DISH', 'DKNG', 'DLO', 'DLTR', 'DNLI', 'DNUT', 'DOCU', 'DOOO', 'DORM', 'DOX', 'DRVN', 'DSGX', 'DUOL', 'DXCM', 'EA', 'EBAY', 'EBC', 'EEFT', 'EMBC', 'ENPH', 'ENSG', 'ENTG', 'EQIX', 'ERIC', 'ERIE', 'ESGR', 'ESLT', 'ETSY', 'EVO', 'EWBC', 'EXAS', 'EXC', 'EXEL', 'EXLS', 'EXPD', 'EXPE', 'EXPO', 'EXTR', 'EYE', 'FA', 'FANG', 'FAST', 'FCFS', 'FCNCA', 'FELE', 'FFBC', 'FFIN', 'FFIV', 'FHB', 'FIBK', 'FISV', 'FITB', 'FIVE', 'FIVN', 'FIZZ', 'FLEX', 'FLNC', 'FLYW', 'FOCS', 'FOLD', 'FOX', 'FOXA', 'FOXF', 'FRHC', 'FRME', 'FROG', 'FRPT', 'FRSH', 'FSLR', 'FSV', 'FTNT', 'FULT', 'FUTU', 'FWONA', 'FWONK', 'FWRD', 'FYBR', 'GBDC', 'GDRX', 'GDS', 'GEN', 'GFS', 'GH', 'GILD', 'GLBE', 'GLNG', 'GLPG', 'GLPI', 'GMAB', 'GNTX', 'GO', 'GOOG', 'GOOGL', 'GRAB', 'GRFS', 'GT', 'GTLB', 'HALO', 'HAS', 'HBAN', 'HCM', 'HCP', 'HELE', 'HLNE', 'HOLX', 'HON', 'HOOD', 'HPK', 'HQY', 'HRMY', 'HSIC', 'HST', 'HTHT', 'HTZ', 'HUBG', 'HWC', 'HZNP', 'IAC', 'IART', 'IBKR', 'IBOC', 'IBRX', 'IBTX', 'ICLR', 'ICUI', 'IDXX', 'IEP', 'ILMN', 'IMCR', 'INCY', 'INDB', 'INMD', 'INSM', 'INTC', 'INTU', 'IONS', 'IOSP', 'IPAR', 'IPGP', 'IQ', 'IRDM', 'IRTC', 'ISEE', 'ISRG', 'ITCI', 'ITRI', 'JAMF', 'JAZZ', 'JBHT', 'JBLU', 'JD', 'JJSF', 'JKHY', 'KDP', 'KHC', 'KLAC', 'KLIC', 'KNBE', 'KRTX', 'LAMR', 'LANC', 'LAZR', 'LBRDA', 'LBRDK', 'LBTYA', 'LBTYB', 'LBTYK', 'LCID', 'LECO', 'LEGN', 'LESL', 'LFUS', 'LGIH', 'LHCG', 'LI', 'LITE', 'LIVN', 'LKQ', 'LNT', 'LNTH', 'LNW', 'LOGI', 'LOPE', 'LPLA', 'LRCX', 'LSCC', 'LSTR', 'LSXMA', 'LSXMB', 'LSXMK', 'LULU', 'LYFT', 'MANH', 'MAR', 'MASI', 'MAT', 'MBLY', 'MCHP', 'MDB', 'MDLZ', 'MDRX', 'MEDP', 'MELI', 'MEOH', 'META', 'MGEE', 'MGPI', 'MGRC', 'MIDD', 'MKSI', 'MKTX', 'MLCO', 'MMSI', 'MMYT', 'MNDY', 'MNST', 'MORN', 'MPWR', 'MQ', 'MRCY', 'MRNA', 'MRTX', 'MRVL', 'MSFT', 'MSTR', 'MTCH', 'MTSI', 'MU', 'MXL', 'NARI', 'NATI', 'NAVI', 'NBIX', 'NCNO', 'NDAQ', 'NDSN', 'NEOG', 'NFE', 'NFLX', 'NICE', 'NOVT', 'NSIT', 'NTAP', 'NTCT', 'NTES', 'NTLA', 'NTNX', 'NTRA', 'NTRS', 'NUVA', 'NVCR', 'NVDA', 'NVEE', 'NVEI', 'NVMI', 'NWE', 'NWL', 'NWS', 'NWSA', 'NWTN', 'NXPI', 'NXST', 'ODFL', 'ODP', 'OKTA', 'OLED', 'OLK', 'OLLI', 'OLPX', 'OMAB', 'OMCL', 'ON', 'ONB', 'ONEM', 'OPCH', 'ORLY', 'OTEX', 'OTTR', 'OZK', 'PAA', 'PAAS', 'PACB', 'PACW', 'PAGP', 'PANW', 'PARA', 'PARAA', 'PAYX', 'PCAR', 'PCH', 'PCTY', 'PCVX', 'PDCE', 'PDCO', 'PDD', 'PECO', 'PEGA', 'PENN', 'PEP', 'PFG', 'PGNY', 'PI', 'PINC', 'PLTK', 'PLUG', 'PLXS', 'PNFP', 'PODD', 'POOL', 'POWI', 'PPBI', 'PPC', 'PRFT', 'PRGS', 'PROK', 'PRTA', 'PRVA', 'PSEC', 'PSMT', 'PSNY', 'PSNYW', 'PTC', 'PTCT', 'PTEN', 'PTON', 'PTVE', 'PYCR', 'PYPL', 'PZZA', 'QCOM', 'QDEL', 'QFIN', 'QLYS', 'QRTEB', 'QRVO', 'RARE', 'RCM', 'REG', 'REGN', 'REYN', 'RGEN', 'RGLD', 'RIVN', 'RLAY', 'RMBS', 'RNST', 'RNW', 'ROIV', 'ROKU', 'ROST', 'RPD', 'RPRX', 'RRR', 'RUM', 'RUN', 'RUSHA', 'RUSHB', 'RVMD', 'RXDX', 'RYAAY', 'SABR', 'SAGE', 'SAIA', 'SANM', 'SBAC', 'SBLK', 'SBNY', 'SBRA', 'SBUX', 'SEDG', 'SEIC', 'SFM', 'SFNC', 'SGEN', 'SGML', 'SGRY', 'SHC', 'SHLS', 'SHOO', 'SIGI', 'SILK', 'SIMO', 'SIRI', 'SITM', 'SIVB', 'SLAB', 'SLM', 'SMCI', 'SMPL', 'SNPS', 'SNY', 'SOFI', 'SONO', 'SPLK', 'SPSC', 'SPT', 'SPWR', 'SRAD', 'SRCL', 'SRPT', 'SSB', 'SSNC', 'SSRM', 'STAA', 'STLD', 'STNE', 'STX', 'SWAV', 'SWKS', 'SYBT', 'SYNA', 'SYNH', 'TCBI', 'TCOM', 'TEAM', 'TECH', 'TENB', 'TER', 'TFSL', 'THRM', 'TIGO', 'TMUS', 'TNDM', 'TOWN', 'TPG', 'TRIP', 'TRMB', 'TRMD', 'TRMK', 'TROW', 'TRUP', 'TSCO', 'TSEM', 'TSLA', 'TTD', 'TTEC', 'TTEK', 'TTWO', 'TW', 'TWKS', 'TWNK', 'TXG', 'TXN', 'TXRH', 'UAL', 'UBSI', 'UCBI', 'UFPI', 'UHAL', 'UHALB', 'ULCC', 'ULTA', 'UMBF', 'UMPQ', 'URBN', 'UTHR', 'VC', 'VCYT', 'VERX', 'VIAV', 'VICR', 'VIR', 'VIRT', 'VLY', 'VNOM', 'VOD', 'VRNS', 'VRNT', 'VRRM', 'VRSK', 'VRSN', 'VRTX', 'VSAT', 'VTRS', 'WAFD', 'WB', 'WBA', 'WBD', 'WDAY', 'WDC', 'WDFC', 'WEN', 'WERN', 'WFRD', 'WING', 'WIRE', 'WIX', 'WMG', 'WOOF', 'WSBC', 'WSC', 'WSFS', 'WTFC', 'WTW', 'WWD', 'WYNN', 'XEL', 'XENE', 'XM', 'XP', 'XRAY', 'XRX', 'YY', 'Z', 'ZBRA', 'ZD', 'ZG', 'ZI', 'ZION', 'ZLAB', 'ZM', 'ZS'];
+    autocomplete(document.getElementById("autocomplete"), stocks);
+</script>
+
+
+{% endblock %}

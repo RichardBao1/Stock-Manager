@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block page_title %} Home Page {% endblock %}
+
+{% block page_content %}
+<div class="cover-container d-flex h-100 p-3 mx-auto flex-column">
+    <header class="masthead mb-auto">
+        <div class="inner">
+            <h3 class="masthead-brand">Stock Manager</h3>
+            <nav class="nav nav-masthead justify-content-center">
+                <a class="nav-link active" href="#">Home</a>
+                <a class="nav-link" href="#">About</a>
+                <a class="nav-link" href="#">Log In</a>
+            </nav>
+        </div>
+    </header>
+    <br>
+    <br>
+    <br>
+    <main role="main" class="inner cover">
+        <h1 class="cover-heading">Your Stock Porfolio</h1>
+        <p class="lead">Buy, sell or analyse stocks on your own.</p>
+        <p class="lead">
+            <a href="#" class="btn btn-lg btn-secondary">Learn more</a>
+        </p>
+        <br>
+        <hr>
+        <br>
+        <section id="showcase">
+            <h1 id="header">Personal Stock Analyser</h1>
+            <br>
+            <br>
+            <section id="stockCollapse">
+                <div class="container contact-box">
+                    <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#country"
+                            align="center">For Data by Stock
+                    </button>
+                    <br>
+                    <br>
+                    <br>
+                    {% block stock_content %}{% endblock %}
+                    <div id="country" class="collapse collapse-box" align="center">
+                    </div>
+            </section>
+        </section>
+        <br>
+        <hr>
+        <br>
+        <section>
+            <div class="inner">
+                <h1 class="cover-heading">Stock Porfolio</h1>
+                <p class="lead">Portfolio Balance: ${{'%0.2f'| format(balance|float)}}</p>
+
+                <h2 class="cover-heading">Portfolio</h2>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Stock Code</th>
+                        <th>Amount</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for key, value in stock_portfolio.items() %}
+                    {% if value > 0 %}
+                    <tr>
+                        <td> {{ key }}</td>
+                        <td> {{ value }}</td>
+                    </tr>
+                    {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <br>
+                <hr>
+                <br>
+                <form action="" method="post" autocomplete="off">
+                    {{ purchase_form.hidden_tag() }}
+                    <p>
+                        {{ purchase_form.stock.label }}
+                        {{ purchase_form.stock(size=40, placeholder = 'type stock code here', class='select-box')}}
+                    </p>
+                    <p>
+                        {{ purchase_form.number_of_stocks.label }}
+                        {{ purchase_form.number_of_stocks(size=40, placeholder = 'input the number of stocks here',
+                        class='select-box')}}
+                    </p>
+
+                    <p>
+                        {{ purchase_form.buy_sell.label }}:
+                        {{ purchase_form.buy_sell(placeholder = 'Buy or Sell', class='select-box')}}
+                    </p>
+
+                    <p id="submit">
+                        {{purchase_form.submit()}}
+                    </p>
+
+                    <p class="error_p">{{error}}</p>
+                </form>
+            </div>
+        </section>
+        <br>
+    </main>
+
+    <footer class="mastfoot mt-auto">
+        <div class="inner">
+            <p>Written by Richard Bao</p>
+        </div>
+    </footer>
+</div>
+
+<!--
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/bokeh/2.0.2/bokeh-min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/bokeh/2.0.2/bokeh-widgets.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/bokeh/2.0.2/bokeh-tables.js'></script>-->
+{% endblock %}

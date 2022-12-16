@@ -1,0 +1,27 @@
+{% extends "home.html" %}
+
+{% block stock_content %}
+<hr>
+
+<section class="">
+    <div class="container">
+        <h1 id = "stock-price">Stock Price of {{stock_name}}: ${{stock_price}}</h1>
+
+    </div>
+</section>
+
+<br>
+<br>
+
+<div id="country" class="collapse.show collapse-box" align="center">
+    {{ div_cs | safe}}
+    {{ script_cs | safe}}
+</div>
+<br>
+<div>
+    <a href="/">
+        <button class="button btn-primary" type="button"> Go Back </button>
+    </a>
+</div>
+
+{% endblock %}
