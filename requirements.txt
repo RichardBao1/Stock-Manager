@@ -1,5 +1,5 @@
 click==8.1.3
-Flask==1.1.2
+Flask==2.2.2
 gunicorn==20.0.4
 importlib-metadata==5.1.0
 itsdangerous==2.1.2
@@ -7,10 +7,10 @@ Jinja2==3.1.2
 MarkupSafe==2.1.1
 Werkzeug==2.2.2
 zipp==3.11.0
-flask_bootstrap
-flask_wtf
-bokeh
-pandas
-bs4
-wtforms
-requests
+flask_bootstrap==4.0.0
+flask_wtf==1.0.1
+bokeh==3.0.3
+pandas==1.5.2
+bs4==4.10.0
+wtforms==3.0.1
+requests==2.24.0
