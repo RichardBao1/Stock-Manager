@@ -11,6 +11,6 @@ flask_bootstrap4==4.0.0
 flask_wtf==1.0.1
 bokeh==3.0.3
 pandas==1.5.2
-bs4==4.10.0
+beautifulsoup4==4.10.0
 wtforms==3.0.1
 requests==2.24.0
