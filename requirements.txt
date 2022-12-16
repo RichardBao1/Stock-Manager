@@ -13,3 +13,4 @@ bokeh
 pandas
 bs4
 wtforms
+requests
