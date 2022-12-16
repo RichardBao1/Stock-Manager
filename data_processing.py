@@ -1,7 +1,7 @@
 import requests
 import pandas as pd
 from bokeh.embed import components
-from bokeh.plotting import figure
+from bokeh.plotting import figure, show
 from bs4 import BeautifulSoup
 
 
