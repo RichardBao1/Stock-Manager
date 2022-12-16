@@ -95,4 +95,3 @@ def purchase_handler(form_data):
 
     return error_message
 
-
